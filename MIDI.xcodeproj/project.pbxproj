@@ -15,6 +15,7 @@
 		20184F9715B9DAA400CE7D1A /* MIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20184F7915B9DAA300CE7D1A /* MIDI.framework */; };
 		20184F9D15B9DAA400CE7D1A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20184F9B15B9DAA400CE7D1A /* InfoPlist.strings */; };
 		20184FA015B9DAA400CE7D1A /* MIDITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20184F9F15B9DAA400CE7D1A /* MIDITests.m */; };
+		20184FB115B9DB4800CE7D1A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20184FB015B9DB4800CE7D1A /* CoreMIDI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		20184F9C15B9DAA400CE7D1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20184F9E15B9DAA400CE7D1A /* MIDITests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDITests.h; sourceTree = "<group>"; };
 		20184F9F15B9DAA400CE7D1A /* MIDITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MIDITests.m; sourceTree = "<group>"; };
+		20184FB015B9DB4800CE7D1A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20184FB115B9DB4800CE7D1A /* CoreMIDI.framework in Frameworks */,
 				20184F7D15B9DAA300CE7D1A /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +93,7 @@
 		20184F7B15B9DAA300CE7D1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				20184FB015B9DB4800CE7D1A /* CoreMIDI.framework */,
 				20184F7C15B9DAA300CE7D1A /* Cocoa.framework */,
 				20184F9215B9DAA400CE7D1A /* SenTestingKit.framework */,
 				20184F7E15B9DAA300CE7D1A /* Other Frameworks */,
