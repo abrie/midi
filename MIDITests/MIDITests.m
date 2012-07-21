@@ -1,20 +1,13 @@
-//
-//  MIDITests.m
-//  MIDITests
-//
-//  Created by abrie on 2012-07-20.
-//  Copyright (c) 2012 abrie. All rights reserved.
-//
-
 #import "MIDITests.h"
 
 @implementation MIDITests
+@synthesize midi;
 
 - (void)setUp
 {
     [super setUp];
     
-    // Set-up code here.
+    [self setMidi: [[MIDI alloc] init] ];
 }
 
 - (void)tearDown
@@ -24,9 +17,14 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)test_noteOn
 {
-    STFail(@"Unit tests are not implemented yet in MIDITests");
+    [midi noteOnChannel:0 number:64 velocity:64];
+}
+
+- (void)test_noteOff
+{
+     [midi noteOffChannel:0 number:64 velocity:64];
 }
 
 @end

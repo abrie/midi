@@ -7,7 +7,10 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "MIDI.h"
 
 @interface MIDITests : SenTestCase
+
+@property (nonatomic, strong) MIDI* midi;
 
 @end
