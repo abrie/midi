@@ -5,6 +5,9 @@
 
 @property (nonatomic, strong) MIDI* midi;
 @property (atomic) BOOL midiClockReceived;
+@property (atomic) BOOL midiStartReceived;
+@property (atomic) BOOL midiStopReceived;
+@property (atomic) BOOL midiContinueReceived;
 @property (atomic) BOOL midiTickReceived;
 @property (atomic, strong) NSDictionary *lastMidiMessage;
 @end

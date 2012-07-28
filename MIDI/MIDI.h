@@ -50,5 +50,8 @@
 
 - (void)sendClock;
 - (void)sendTick;
+- (void)sendStart;
+- (void)sendStop;
+- (void)sendContinue;
 
 @end

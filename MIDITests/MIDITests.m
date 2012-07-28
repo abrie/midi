@@ -5,6 +5,9 @@
 @synthesize lastMidiMessage;
 @synthesize midiClockReceived;
 @synthesize midiTickReceived;
+@synthesize midiContinueReceived;
+@synthesize midiStartReceived;
+@synthesize midiStopReceived;
 
 - (void)setUp
 {
@@ -17,6 +20,9 @@
     [self setLastMidiMessage:nil];
     [self setMidiClockReceived:NO];
     [self setMidiTickReceived:NO];
+    [self setMidiContinueReceived:NO];
+    [self setMidiStartReceived:NO];
+    [self setMidiStopReceived:NO];
 }
 
 - (void)tearDown
@@ -35,25 +41,61 @@
     [self setMidiTickReceived:YES];
 }
 
-- (void)midiContinue
-{
-}
-
 - (void)midiStart
 {
+    [self setMidiStartReceived:YES];
 }
 
 - (void)midiStop
 {
+    [self setMidiStopReceived:YES];
 }
 
-
-- (void)waitForMessage
+- (void)midiContinue
 {
-    while( [self lastMidiMessage] == nil )
+    [self setMidiContinueReceived:YES];
+}
+
+- (void)test_Continue
+{
+    STAssertFalse( [self midiContinueReceived], @"Initial test condition");
+    
+    [self.midi sendContinue];
+    
+    while( ![self midiContinueReceived] )
     {
-        //a tight loop waiting for data...erg, bleh lol?
+        // the tight loop strikes again.
     }
+    
+    STAssertTrue( [self midiContinueReceived], nil);
+}
+
+- (void)test_Start
+{
+    STAssertFalse( [self midiStartReceived], @"Initial test condition");
+    
+    [self.midi sendStart];
+    
+    while( ![self midiStartReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    
+    STAssertTrue( [self midiStartReceived], nil);
+}
+
+- (void)test_Stop
+{
+    STAssertFalse( [self midiStopReceived], @"Initial test condition");
+    
+    [self.midi sendStop];
+    
+    while( ![self midiStopReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    
+    STAssertTrue( [self midiStopReceived], nil);
 }
 
 - (void)test_Clock
@@ -70,7 +112,6 @@
     STAssertTrue( [self midiClockReceived], nil);
 }
 
-
 - (void)test_Tick
 {
     STAssertFalse( [self midiTickReceived], @"Initial test condition");
@@ -83,6 +124,14 @@
     }
     
     STAssertTrue( [self midiTickReceived], nil);
+}
+
+- (void)waitForMessage
+{
+    while( [self lastMidiMessage] == nil )
+    {
+        //a tight loop waiting for data...erg, bleh lol?
+    }
 }
 
 - (void)test_sendOnToChannel
