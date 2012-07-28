@@ -1,29 +1,58 @@
 #import "midi.h"
 
-static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcConnRefCon);
+static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcConnRefCon);
 
 @implementation MIDI
+@synthesize clientName = _clientName;
 
-- (id)init
+- (id)initWithName:(NSString *)clientName
 {
     self = [super init];
-    if (self) {
-        MIDIClientCreate(CFSTR("feelers synthesizer"),0,0,&client);
-        MIDIOutputPortCreate(client, CFSTR("output"), &output_port);
-        MIDIInputPortCreate(client, CFSTR("input"), readProc, (__bridge void *)(self), &input_port);
-        [self setDestinations: [self discoverDestinations] ];
-        [self setSources: [self discoverSources]];
+    
+    if (self)
+    {
+        [self instantiateClient:clientName];
     }
     
     return self;
 }
 
+- (void)instantiateClient:(NSString *)clientName
+{
+    MIDIClientCreate((__bridge CFStringRef)clientName,
+                     0,
+                     0,
+                     &client);
+    
+    MIDIOutputPortCreate(client,
+                         CFSTR("output"),
+                         &output_port);
+    
+    MIDIInputPortCreate(client,
+                        CFSTR("input"),
+                        midiRead,
+                        (__bridge void *)(self),
+                        &input_port);
+    
+    self.destinations = [self discoverDestinations];
+    self.sources = [self discoverSources];
+    _clientName = [NSString stringWithString:clientName];
+}
+
 - (NSString *)stringFromMIDIObjectRef:(MIDIObjectRef)object
 {
-   CFStringRef name = nil;
-    if (noErr != MIDIObjectGetStringProperty(object, kMIDIPropertyDisplayName, &name))
+    CFStringRef name = nil;
+    
+    if( noErr != MIDIObjectGetStringProperty(object,
+                                             kMIDIPropertyDisplayName,
+                                             &name) )
+    {
         return nil;
-    return (__bridge NSString *)name;
+    }
+    else
+    {
+        return (__bridge NSString *)name;
+    }
 }
 
 - (NSArray *)discoverSources
@@ -31,10 +60,11 @@ static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     NSMutableArray *result = [[NSMutableArray alloc] init];
     ItemCount sourceCount = MIDIGetNumberOfSources();
     
-    for (ItemCount i = 0 ; i < sourceCount ; ++i)
+    for( ItemCount i = 0 ; i < sourceCount ; ++i )
     {
         MIDIEndpointRef source = MIDIGetSource(i);
-        if ((void*)source != NULL)
+        
+        if( (void*)source != NULL )
         {
             [result addObject: [self stringFromMIDIObjectRef:source ]];
         }
@@ -59,13 +89,37 @@ static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     
     return result;
 }
- 
--(void) connectDestination:(NSInteger)index
+
+-(void) connectDestinationByName:(NSString *)name
+{
+    [[self discoverDestinations]
+     enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+     {
+        if( (*stop = [name isEqualToString:obj]) )
+        {
+            [self connectDestinationByIndex:idx];
+        }
+    }];
+}
+
+-(void) connectDestinationByIndex:(NSInteger)index
 {
     out_endpoint = MIDIGetDestination(index);
 }
 
--(void) connectSource:(NSInteger)index
+-(void) connectSourceByName:(NSString *)name
+{
+    [[self discoverSources]
+     enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
+     {
+        if( (*stop = [name isEqualToString:obj]) )
+        {
+            [self connectSourceByIndex:idx];
+        }
+    }];
+}
+
+-(void) connectSourceByIndex:(NSInteger)index
 {
     MIDIPortConnectSource( input_port, MIDIGetSource(index), NULL );
 }
@@ -75,7 +129,8 @@ static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     MIDIPortDisconnectSource( input_port, MIDIGetSource(index) );
 }
 
-- (void)transmitToEndpoint:(MIDIEndpointRef)endpoint byte:(unsigned int)byte
+- (void)transmitToEndpoint:(MIDIEndpointRef)endpoint
+                      byte:(unsigned int)byte
 {
     Byte buffer[1024];
 	MIDIPacketList *packet_list = (MIDIPacketList *)buffer;
@@ -85,11 +140,21 @@ static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     
 	message[0] = byte;
 	
-    packet = MIDIPacketListAdd( packet_list, sizeof(buffer), packet, 0, 1, message);
-	result = MIDISend(output_port, endpoint, packet_list);
+    packet = MIDIPacketListAdd(
+                               packet_list,
+                               sizeof(buffer),
+                               packet,
+                               0,
+                               1,
+                               message);
+	
+    result = MIDISend(output_port, endpoint, packet_list);
 }
 
-- (void)transmitToEndpoint:(MIDIEndpointRef)endpoint byte_1:(unsigned)byte_1 byte_2:(unsigned)byte_2 byte_3:(unsigned)byte_3
+- (void)transmitToEndpoint:(MIDIEndpointRef)endpoint
+                    status:(unsigned)byte_1
+                    data_1:(unsigned)byte_2
+                    data_2:(unsigned)byte_3
 {
 	Byte buffer[1024];
 	MIDIPacketList *packet_list = (MIDIPacketList *)buffer;
@@ -101,75 +166,79 @@ static void readProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 	message[1] = byte_2;
 	message[2] = byte_3;
 	
-	packet = MIDIPacketListAdd( packet_list, sizeof(buffer), packet, 0, 3, message);
-	result = MIDISend(output_port, endpoint, packet_list);
+	packet = MIDIPacketListAdd(packet_list,
+                               sizeof(buffer),
+                               packet,
+                               0,
+                               3,
+                               message);
+    
+	result = MIDISend(output_port,
+                      endpoint,
+                      packet_list);
 }
 
-- (void)noteOnChannel:(unsigned int)channel number:(unsigned int)number velocity:(unsigned int)velocity
+- (void)sendOnToChannel:(unsigned int)channel
+                 number:(unsigned int)number
+               velocity:(unsigned int)velocity
 {
 	[self transmitToEndpoint:out_endpoint
-             byte_1:0x90 + channel
-             byte_2:number
-             byte_3:velocity];
+                      status:0x90 + channel
+                      data_1:number
+                      data_2:velocity];
 }
 
-- (void)noteOffChannel:(unsigned int)channel number:(unsigned int)number velocity:(unsigned int)velocity
+- (void)sendOffToChannel:(unsigned int)channel
+                  number:(unsigned int)number
+                velocity:(unsigned int)velocity
 {
 	[self transmitToEndpoint:out_endpoint
-             byte_1:0x80 + channel
-             byte_2:number
-             byte_3:velocity ];
+                      status:0x80 + channel
+                      data_1:number
+                      data_2:velocity ];
 }
 
-- (void)reset
+- (void)sendReset
 {
 	[self transmitToEndpoint:out_endpoint
-               byte:0xFF ];
+                        byte:0xFF ];
 }
 
-- (void)midiStart
+- (void)processMidiPacket:(const MIDIPacket *)packet
 {
- }
-
-- (void)midiStop
-{
-}
-
-- (void)midiContinue
-{
-}
-
-- (void)midiClock
-{
-}
-
-- (void)midiPacket:(const MIDIPacket *)packet
-{
-    switch (packet->data[0]) {
+    switch (packet->data[0])
+    {
         case 0xF8:
-            [self midiClock];
+            [_realtimeDelegate midiClock];
             break;
         case 0xFA:
-            [self midiStart];
+            [_realtimeDelegate midiStart];
             break;
         case 0xFC:
-            [self midiStop];
+            [_realtimeDelegate midiStop];
             break;
         case 0xFB:
-            [self midiContinue];
+            [_realtimeDelegate midiContinue];
             break;
+        
         default:
+            [_realtimeDelegate midiUnhandledStatus:packet->data[0]
+                                             data1:packet->data[1]
+                                             data2:packet->data[2]
+                                               tag:_clientName];
             break;
     }
 }
 
-static void readProc(const MIDIPacketList *packetList, void *readProcRefCon, void *srcConnRefCon)
+static void midiRead(const MIDIPacketList *packetList,
+                     void *readProcRefCon,
+                     void *srcConnRefCon)
 {
-   const MIDIPacket *packet = &packetList->packet[0];
-        
-    for (int i = 0; i < packetList->numPackets; ++i)
+    const MIDIPacket *packet = &packetList->packet[0];
+    
+    for( int i = 0; i < packetList->numPackets; ++i )
     {
-        [(__bridge MIDI*)readProcRefCon midiPacket:packet];
+        [(__bridge MIDI*)readProcRefCon processMidiPacket:packet];
         packet = MIDIPacketNext( packet );
     }
 }
