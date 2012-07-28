@@ -10,7 +10,7 @@
 
 @end
 
-@protocol VoiceProtocol <NSObject>
+@protocol StatusProtocol <NSObject>
 
 - (void)midiStatus:(Byte)status data1:(Byte)data1 data2:(Byte)data2;
 
@@ -27,7 +27,7 @@
 @property (strong) NSArray *sources;
 @property (strong) NSArray *destinations;
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
-@property (strong) id<VoiceProtocol> voiceDelegate;
+@property (strong) id<StatusProtocol> voiceDelegate;
 
 - (id)initWithName:(NSString *)clientName;
 
@@ -46,5 +46,7 @@
 - (void) sendOffToChannel:(unsigned int)channel
                    number:(unsigned int)number
                  velocity:(unsigned int)velocity;
+
+- (void)sendClock;
 
 @end

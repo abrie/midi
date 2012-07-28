@@ -183,6 +183,11 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                       packet_list);
 }
 
+- (void)sendClock
+{
+    [self transmitToEndpoint:out_endpoint byte:0xF8];
+}
+
 - (void)sendOnToChannel:(unsigned int)channel
                  number:(unsigned int)number
                velocity:(unsigned int)velocity

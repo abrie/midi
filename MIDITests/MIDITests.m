@@ -3,6 +3,7 @@
 @implementation MIDITests
 @synthesize midi;
 @synthesize lastMidiMessage;
+@synthesize midiClockReceived;
 
 - (void)setUp
 {
@@ -13,6 +14,7 @@
     [self.midi connectDestinationByIndex:0];
     [self.midi connectSourceByIndex:0];
     [self setLastMidiMessage:nil];
+    [self setMidiClockReceived:NO];
 }
 
 - (void)tearDown
@@ -23,6 +25,7 @@
 
 - (void)midiClock
 {
+    [self setMidiClockReceived:YES];
 }
 
 - (void)midiContinue
@@ -43,6 +46,18 @@
     {
         //a tight loop waiting for data...erg, bleh lol?
     }
+}
+
+- (void)test_Clock
+{
+    [self.midi sendClock];
+    
+    while( ![self midiClockReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    
+    STAssertTrue( [self midiClockReceived], nil);
 }
 
 - (void)test_sendOnToChannel
