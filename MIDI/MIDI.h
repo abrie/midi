@@ -7,6 +7,7 @@
 - (void)midiStop;
 - (void)midiContinue;
 - (void)midiClock;
+- (void)midiTick;
 
 @end
 
@@ -48,5 +49,6 @@
                  velocity:(unsigned int)velocity;
 
 - (void)sendClock;
+- (void)sendTick;
 
 @end

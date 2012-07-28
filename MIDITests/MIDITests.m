@@ -4,6 +4,7 @@
 @synthesize midi;
 @synthesize lastMidiMessage;
 @synthesize midiClockReceived;
+@synthesize midiTickReceived;
 
 - (void)setUp
 {
@@ -15,6 +16,7 @@
     [self.midi connectSourceByIndex:0];
     [self setLastMidiMessage:nil];
     [self setMidiClockReceived:NO];
+    [self setMidiTickReceived:NO];
 }
 
 - (void)tearDown
@@ -26,6 +28,11 @@
 - (void)midiClock
 {
     [self setMidiClockReceived:YES];
+}
+
+- (void)midiTick
+{
+    [self setMidiTickReceived:YES];
 }
 
 - (void)midiContinue
@@ -40,6 +47,7 @@
 {
 }
 
+
 - (void)waitForMessage
 {
     while( [self lastMidiMessage] == nil )
@@ -50,6 +58,8 @@
 
 - (void)test_Clock
 {
+    STAssertFalse( [self midiClockReceived], @"Initial test condition");
+    
     [self.midi sendClock];
     
     while( ![self midiClockReceived] )
@@ -58,6 +68,21 @@
     }
     
     STAssertTrue( [self midiClockReceived], nil);
+}
+
+
+- (void)test_Tick
+{
+    STAssertFalse( [self midiTickReceived], @"Initial test condition");
+    
+    [self.midi sendTick];
+    
+    while( ![self midiTickReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    
+    STAssertTrue( [self midiTickReceived], nil);
 }
 
 - (void)test_sendOnToChannel

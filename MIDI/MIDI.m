@@ -188,6 +188,11 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     [self transmitToEndpoint:out_endpoint byte:0xF8];
 }
 
+- (void)sendTick
+{
+    [self transmitToEndpoint:out_endpoint byte:0xF9];
+}
+
 - (void)sendOnToChannel:(unsigned int)channel
                  number:(unsigned int)number
                velocity:(unsigned int)velocity
@@ -214,6 +219,9 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     {
         case 0xF8:
             [_realtimeDelegate midiClock];
+            break;
+        case 0xF9:
+            [_realtimeDelegate midiTick];
             break;
         case 0xFA:
             [_realtimeDelegate midiStart];
