@@ -221,10 +221,9 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
             break;
         
         default:
-            [_voiceDelegate midiUnhandledStatus:packet->data[0]
-                                             data1:packet->data[1]
-                                             data2:packet->data[2]
-                                               tag:_clientName];
+            [_voiceDelegate midiStatus:packet->data[0]
+                                 data1:packet->data[1]
+                                 data2:packet->data[2]];
             break;
     }
 }

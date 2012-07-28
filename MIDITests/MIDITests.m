@@ -75,7 +75,7 @@
     STAssertTrue( [expected isEqualToDictionary:[self lastMidiMessage]], nil);
 }
 
-- (void)midiUnhandledStatus:(Byte)status data1:(Byte)data1 data2:(Byte)data2 tag:(NSString *)tag
+- (void)midiStatus:(Byte)status data1:(Byte)data1 data2:(Byte)data2
 {
     NSDictionary *result =
     @{
