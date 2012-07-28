@@ -9,6 +9,7 @@
     [super setUp];
     [self setMidi:[[MIDI alloc] initWithName:@"midi_unit_tests"]];
     [self.midi setRealtimeDelegate:self];
+    [self.midi setVoiceDelegate:self];
     [self.midi connectDestinationByIndex:0];
     [self.midi connectSourceByIndex:0];
     [self setLastMidiMessage:nil];

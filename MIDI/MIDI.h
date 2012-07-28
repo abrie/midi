@@ -7,6 +7,11 @@
 - (void)midiStop;
 - (void)midiContinue;
 - (void)midiClock;
+
+@end
+
+@protocol VoiceProtocol <NSObject>
+
 - (void)midiUnhandledStatus:(Byte)status data1:(Byte)data1 data2:(Byte)data2 tag:(NSString *)tag;
 
 @end
@@ -22,6 +27,7 @@
 @property (strong) NSArray *sources;
 @property (strong) NSArray *destinations;
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
+@property (strong) id<VoiceProtocol> voiceDelegate;
 
 - (id)initWithName:(NSString *)clientName;
 
