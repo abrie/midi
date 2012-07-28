@@ -107,6 +107,11 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     out_endpoint = MIDIGetDestination(index);
 }
 
+-(void) disconnectDestinationByIndex:(NSInteger)index
+{
+    MIDIPortDisconnectSource(input_port, MIDIGetSource(index) );
+}
+
 -(void) connectSourceByName:(NSString *)name
 {
     [[self discoverSources]
@@ -196,12 +201,6 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                       status:0x80 + channel
                       data_1:number
                       data_2:velocity ];
-}
-
-- (void)sendReset
-{
-	[self transmitToEndpoint:out_endpoint
-                        byte:0xFF ];
 }
 
 - (void)processMidiPacket:(const MIDIPacket *)packet

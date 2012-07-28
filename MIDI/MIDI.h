@@ -28,10 +28,10 @@
 - (void) connectSourceByName:(NSString *)name;
 - (void) connectSourceByIndex:(NSInteger)index;
 
+
 - (void) connectDestinationByName:(NSString *)name;
 - (void) connectDestinationByIndex:(NSInteger)index;
-
-- (void) sendReset;
+- (void) disconnectDestinationByIndex:(NSInteger)index;
 
 - (void) sendOnToChannel:(unsigned int)channel
                   number:(unsigned int)number
