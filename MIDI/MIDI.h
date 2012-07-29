@@ -24,6 +24,7 @@
     MIDIPortRef output_port;
 	MIDIEndpointRef out_endpoint;
 }
+
 @property (readonly) NSString *clientName;
 @property (strong) NSArray *sources;
 @property (strong) NSArray *destinations;
@@ -32,21 +33,20 @@
 
 - (id)initWithName:(NSString *)clientName;
 
-- (void) connectSourceByName:(NSString *)name;
-- (void) connectSourceByIndex:(NSInteger)index;
+- (void)connectSourceByName:(NSString *)name;
+- (void)connectSourceByIndex:(NSInteger)index;
 
+- (void)connectDestinationByName:(NSString *)name;
+- (void)connectDestinationByIndex:(NSInteger)index;
+- (void)disconnectDestinationByIndex:(NSInteger)index;
 
-- (void) connectDestinationByName:(NSString *)name;
-- (void) connectDestinationByIndex:(NSInteger)index;
-- (void) disconnectDestinationByIndex:(NSInteger)index;
+- (void)sendOnToChannel:(unsigned int)channel
+                 number:(unsigned int)number
+               velocity:(unsigned int)velocity;
 
-- (void) sendOnToChannel:(unsigned int)channel
+- (void)sendOffToChannel:(unsigned int)channel
                   number:(unsigned int)number
                 velocity:(unsigned int)velocity;
-
-- (void) sendOffToChannel:(unsigned int)channel
-                   number:(unsigned int)number
-                 velocity:(unsigned int)velocity;
 
 - (void)sendClock;
 - (void)sendTick;

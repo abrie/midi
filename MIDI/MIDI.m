@@ -81,6 +81,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     for (ItemCount i = 0 ; i < destCount ; ++i)
     {
         MIDIEndpointRef dest = MIDIGetDestination(i);
+        
         if ((void*)dest != NULL)
         {
             [result addObject: [self stringFromMIDIObjectRef:dest]];
