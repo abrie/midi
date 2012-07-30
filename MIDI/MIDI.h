@@ -30,6 +30,8 @@
 @property (strong) NSArray *destinations;
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
 @property (strong) id<StatusProtocol> voiceDelegate;
+@property BOOL internalClock;
+
 
 - (id)initWithName:(NSString *)clientName;
 
@@ -53,5 +55,7 @@
 - (void)sendStart;
 - (void)sendStop;
 - (void)sendContinue;
+
+- (void)runInternalClock:(NSTimeInterval)timeInterval;
 
 @end
