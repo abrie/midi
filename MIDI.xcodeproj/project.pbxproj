@@ -18,6 +18,7 @@
 		20184FB115B9DB4800CE7D1A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20184FB015B9DB4800CE7D1A /* CoreMIDI.framework */; };
 		20B84FE215C6B57D004EF47C /* Clock.h in Headers */ = {isa = PBXBuildFile; fileRef = 20B84FE015C6B57D004EF47C /* Clock.h */; };
 		20B84FE315C6B57D004EF47C /* Clock.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B84FE115C6B57D004EF47C /* Clock.m */; };
+		20B84FE715C6BD7D004EF47C /* ClockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B84FE615C6BD7D004EF47C /* ClockTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		20184FB015B9DB4800CE7D1A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		20B84FE015C6B57D004EF47C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
 		20B84FE115C6B57D004EF47C /* Clock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Clock.m; sourceTree = "<group>"; };
+		20B84FE515C6BD7D004EF47C /* ClockTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockTests.h; sourceTree = "<group>"; };
+		20B84FE615C6BD7D004EF47C /* ClockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClockTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +123,9 @@
 			children = (
 				20184F8915B9DAA300CE7D1A /* MIDI.h */,
 				20184F8A15B9DAA300CE7D1A /* MIDI.m */,
-				20184F8315B9DAA300CE7D1A /* Supporting Files */,
 				20B84FE015C6B57D004EF47C /* Clock.h */,
 				20B84FE115C6B57D004EF47C /* Clock.m */,
+				20184F8315B9DAA300CE7D1A /* Supporting Files */,
 			);
 			path = MIDI;
 			sourceTree = "<group>";
@@ -142,6 +145,8 @@
 			children = (
 				20184F9E15B9DAA400CE7D1A /* MIDITests.h */,
 				20184F9F15B9DAA400CE7D1A /* MIDITests.m */,
+				20B84FE515C6BD7D004EF47C /* ClockTests.h */,
+				20B84FE615C6BD7D004EF47C /* ClockTests.m */,
 				20184F9915B9DAA400CE7D1A /* Supporting Files */,
 			);
 			path = MIDITests;
@@ -284,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20184FA015B9DAA400CE7D1A /* MIDITests.m in Sources */,
+				20B84FE715C6BD7D004EF47C /* ClockTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
