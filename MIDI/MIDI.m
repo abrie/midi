@@ -4,7 +4,6 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 @implementation MIDI
 @synthesize clientName = _clientName;
-@synthesize internalClock;
 
 - (id)initWithName:(NSString *)clientName
 {
@@ -13,7 +12,10 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     if (self)
     {
         [self instantiateClient:clientName];
-        [self setInternalClock:NO];
+        
+        internalClock = [[Clock alloc] initWithStartBlock:^(){ [self sendStart]; }
+                                                    clock:^(){ [self sendClock]; }
+                                                     stop:^(){ [self sendStop]; }];
     }
     
     return self;
@@ -41,31 +43,21 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     _clientName = [NSString stringWithString:clientName];
 }
 
+- (void)stopInternalClock
+{
+    [internalClock stopInternalClock];
+}
+
 - (void)runInternalClock:(NSTimeInterval)timeInterval
 {
-    [self setInternalClock:YES];
-    
-    [NSTimer scheduledTimerWithTimeInterval: timeInterval
-                                     target: self
-                                   selector:@selector(onTick:)
-                                   userInfo: nil repeats:YES];
-    [self sendStart];
+    [internalClock runInternalClock:timeInterval];
 }
 
-- (void)onTick:(NSTimer *)timer
+- (void)adjustInternalClock:(NSTimeInterval)timeInterval
 {
-    if( [self internalClock] )
-    {
-        [self sendClock];
-
-    }
-    else
-    {
-        [timer invalidate];
-        [self sendStop];
-    }
+    [internalClock adjustInternalClock:timeInterval];
 }
-    
+
 - (NSString *)stringFromMIDIObjectRef:(MIDIObjectRef)object
 {
     CFStringRef name = nil;

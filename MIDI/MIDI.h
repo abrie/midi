@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "CoreMidi/Midiservices.h"
+#import "Clock.h"
 
 @protocol RealtimeProtocol <NSObject>
 
@@ -23,6 +24,7 @@
     MIDIPortRef input_port;
     MIDIPortRef output_port;
 	MIDIEndpointRef out_endpoint;
+    Clock *internalClock;
 }
 
 @property (readonly) NSString *clientName;
@@ -30,8 +32,6 @@
 @property (strong) NSArray *destinations;
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
 @property (strong) id<StatusProtocol> voiceDelegate;
-@property BOOL internalClock;
-
 
 - (id)initWithName:(NSString *)clientName;
 
@@ -57,5 +57,7 @@
 - (void)sendContinue;
 
 - (void)runInternalClock:(NSTimeInterval)timeInterval;
+- (void)adjustInternalClock:(NSTimeInterval)timeInterval;
+- (void)stopInternalClock;
 
 @end
