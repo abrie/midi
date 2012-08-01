@@ -64,4 +64,21 @@
     STAssertEquals([self ticks], (NSUInteger)10, nil );
 }
 
+- (void)test_adjust
+{
+    ClockBlock clockBlock = ^(){
+        if( ++_ticks == 5) {
+            [_clock adjustToInterval:0.05];
+        }};
+    
+    [_clock setClockBlock:clockBlock];
+    [_clock startAtInterval:0.1];
+    [self runloop_forInterval:1];
+    [_clock stop];
+    
+    STAssertTrue( [self started], nil );
+    STAssertTrue( [self stopped], nil );
+    STAssertEquals([self ticks], (NSUInteger)15, nil );
+}
+
 @end
