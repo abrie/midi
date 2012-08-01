@@ -19,7 +19,7 @@
     return self;
 }
 
-- (void)stopInternalClock
+- (void)stop
 {
     if (timer)
     {
@@ -38,7 +38,7 @@
                                           userInfo: nil repeats:YES];
 }
 
-- (void)runInternalClock:(NSTimeInterval)timeInterval
+- (void)startAtInterval:(NSTimeInterval)timeInterval
 {
     if (timer)
     {
@@ -51,7 +51,7 @@
     timer = [self generateTimerForInterval:timeInterval];
 }
 
-- (void)adjustInternalClock:(NSTimeInterval)timeInterval
+- (void)adjustToInterval:(NSTimeInterval)timeInterval
 {
     if (timer)
     {

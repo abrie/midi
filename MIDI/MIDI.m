@@ -45,17 +45,17 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 - (void)stopInternalClock
 {
-    [internalClock stopInternalClock];
+    [internalClock stop];
 }
 
 - (void)runInternalClock:(NSTimeInterval)timeInterval
 {
-    [internalClock runInternalClock:timeInterval];
+    [internalClock startAtInterval:timeInterval];
 }
 
 - (void)adjustInternalClock:(NSTimeInterval)timeInterval
 {
-    [internalClock adjustInternalClock:timeInterval];
+    [internalClock adjustToInterval:timeInterval];
 }
 
 - (NSString *)stringFromMIDIObjectRef:(MIDIObjectRef)object

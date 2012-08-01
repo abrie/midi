@@ -11,9 +11,12 @@ typedef void (^ClockBlock)();
 @property (atomic, strong) ClockBlock stopBlock;
 @property (atomic, strong) ClockBlock clockBlock;
 
-- (id)initWithStartBlock:(ClockBlock)start clock:(ClockBlock)clock stop:(ClockBlock)stop;
-- (void)runInternalClock:(NSTimeInterval)timeInterval;
-- (void)adjustInternalClock:(NSTimeInterval)timeInterval;
-- (void)stopInternalClock;
+- (id)initWithStartBlock:(ClockBlock)start
+                   clock:(ClockBlock)clock
+                    stop:(ClockBlock)stop;
+
+- (void)startAtInterval:(NSTimeInterval)timeInterval;
+- (void)adjustToInterval:(NSTimeInterval)timeInterval;
+- (void)stop;
 
 @end

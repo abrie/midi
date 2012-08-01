@@ -21,7 +21,7 @@
 
 - (void)tearDown
 {
-    [_clock stopInternalClock];
+    [_clock stop];
     [super tearDown];
 }
 
@@ -45,7 +45,7 @@
 
 - (void)test_start
 {
-    [_clock runInternalClock:0.1];
+    [_clock startAtInterval:0.1];
     [self runloop_forInterval:1];
     
     STAssertTrue( [self started], nil );
@@ -55,9 +55,9 @@
 
 - (void)test_stop
 {
-    [_clock runInternalClock:0.1];
+    [_clock startAtInterval:0.1];
     [self runloop_forInterval:1];
-    [_clock stopInternalClock];
+    [_clock stop];
     
     STAssertTrue( [self started], nil );
     STAssertTrue( [self stopped], nil );
