@@ -34,7 +34,7 @@
 {
     return [NSTimer scheduledTimerWithTimeInterval: timeInterval
                                             target: self
-                                          selector:@selector(onTick:)
+                                          selector:@selector(atEachInterval:)
                                           userInfo: nil repeats:YES];
 }
 
@@ -60,7 +60,7 @@
     }
 }
 
-- (void)onTick:(NSTimer *)source
+- (void)atEachInterval:(NSTimer *)source
 {
     self.clockBlock();
 }
