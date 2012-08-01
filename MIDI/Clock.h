@@ -7,9 +7,9 @@ typedef void (^ClockBlock)();
       NSTimer *timer;
 }
 
-@property (atomic, strong) ClockBlock clockStartBlock;
-@property (atomic, strong) ClockBlock clockStopBlock;
-@property (atomic, strong) ClockBlock clockTickBlock;
+@property (atomic, strong) ClockBlock startBlock;
+@property (atomic, strong) ClockBlock stopBlock;
+@property (atomic, strong) ClockBlock clockBlock;
 
 - (id)initWithStartBlock:(ClockBlock)start clock:(ClockBlock)clock stop:(ClockBlock)stop;
 - (void)runInternalClock:(NSTimeInterval)timeInterval;

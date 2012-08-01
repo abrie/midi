@@ -2,18 +2,18 @@
 
 @implementation Clock
 
-@synthesize clockStartBlock;
-@synthesize clockStopBlock;
-@synthesize clockTickBlock;
+@synthesize startBlock;
+@synthesize stopBlock;
+@synthesize clockBlock;
 
 - (id)initWithStartBlock:(ClockBlock)start clock:(ClockBlock)clock stop:(ClockBlock)stop;
 {
     self = [super init];
     if( self )
     {
-        [self setClockStartBlock:start];
-        [self setClockStopBlock:stop];
-        [self setClockTickBlock:clock];
+        [self setStartBlock:start];
+        [self setStopBlock:stop];
+        [self setClockBlock:clock];
     }
 
     return self;
@@ -26,7 +26,7 @@
         [timer invalidate];
         timer = nil;
         
-        self.clockStopBlock();
+        self.stopBlock();
     }
 }
 
@@ -46,7 +46,7 @@
         timer = nil;
     }
     
-    self.clockStartBlock();
+    self.startBlock();
     
     timer = [self generateTimerForInterval:timeInterval];
 }
@@ -62,7 +62,7 @@
 
 - (void)onTick:(NSTimer *)source
 {
-    self.clockTickBlock();
+    self.clockBlock();
 }
 
 @end
