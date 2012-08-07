@@ -5,12 +5,13 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 @implementation MIDI
 @synthesize clientName = _clientName;
 
-- (id)initWithName:(NSString *)clientName
+- (id)initWithName:(NSString *)clientName withSync:(dispatch_queue_t)queue
 {
     self = [super init];
     
     if (self)
     {
+        sync = queue;
         [self instantiateClient:clientName];
         
         internalClock = [[Clock alloc] initWithStartBlock:^(){ [self sendStart]; }
@@ -248,30 +249,73 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                       data_2:velocity ];
 }
 
+- (void)notify_midiClock
+{
+    dispatch_async(sync, ^{
+        [_realtimeDelegate midiClock];
+    });
+}
+
+- (void)notify_midiTick
+{
+    dispatch_async(sync, ^{
+        [_realtimeDelegate midiTick];
+    });
+}
+
+- (void)notify_midiStart
+{
+    dispatch_async(sync, ^{
+        [_realtimeDelegate midiStart];
+    });
+}
+
+- (void)notify_midiStop
+{
+    dispatch_async(sync, ^{
+        [_realtimeDelegate midiStop];
+    });
+}
+
+- (void)notify_midiContinue
+{
+    dispatch_async(sync, ^{
+        [_realtimeDelegate midiContinue];
+    });
+}
+
+- (void)notify_midiStatus:(Byte)status withData1:(Byte)data1 withData2:(Byte)data2
+{
+    dispatch_async(sync, ^{
+        [_voiceDelegate midiStatus:status
+                             data1:data1
+                             data2:data2];
+    });
+}
+
 - (void)processMidiPacket:(const MIDIPacket *)packet
 {
     switch (packet->data[0])
     {
         case 0xF8:
-            [_realtimeDelegate midiClock];
+            [self notify_midiClock];
             break;
         case 0xF9:
-            [_realtimeDelegate midiTick];
+            [self notify_midiTick];
             break;
         case 0xFA:
-            [_realtimeDelegate midiStart];
+            [self notify_midiStart];
             break;
         case 0xFC:
-            [_realtimeDelegate midiStop];
+            [self notify_midiStop];
             break;
         case 0xFB:
-            [_realtimeDelegate midiContinue];
+            [self notify_midiContinue];
             break;
-        
         default:
-            [_voiceDelegate midiStatus:packet->data[0]
-                                 data1:packet->data[1]
-                                 data2:packet->data[2]];
+            [self notify_midiStatus:packet->data[0]
+                          withData1:packet->data[1]
+                          withData2:packet->data[2]];
             break;
     }
 }

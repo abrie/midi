@@ -25,6 +25,7 @@
     MIDIPortRef output_port;
 	MIDIEndpointRef out_endpoint;
     Clock *internalClock;
+    dispatch_queue_t sync;
 }
 
 @property (readonly) NSString *clientName;
@@ -33,7 +34,7 @@
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
 @property (strong) id<StatusProtocol> voiceDelegate;
 
-- (id)initWithName:(NSString *)clientName;
+- (id)initWithName:(NSString *)clientName withSync:(dispatch_queue_t)queue;
 
 - (void)connectSourceByName:(NSString *)name;
 - (void)connectSourceByIndex:(NSInteger)index;
