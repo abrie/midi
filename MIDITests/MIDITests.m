@@ -12,8 +12,7 @@
 - (void)setUp
 {
     [super setUp];
-    [self setSync:dispatch_queue_create("queue_for_midi_tests", 0)];
-    [self setMidi:[[MIDI alloc] initWithName:@"midi_unit_tests" withSync:_sync]];
+    [self setMidi:[[MIDI alloc] initWithName:@"midi_unit_tests"]];
     [self.midi setRealtimeDelegate:self];
     [self.midi setVoiceDelegate:self];
     [self.midi connectDestinationByIndex:0];

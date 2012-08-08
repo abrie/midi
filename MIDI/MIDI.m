@@ -5,13 +5,12 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 @implementation MIDI
 @synthesize clientName = _clientName;
 
-- (id)initWithName:(NSString *)clientName withSync:(dispatch_queue_t)queue
+- (id)initWithName:(NSString *)clientName
 {
     self = [super init];
     
     if (self)
     {
-        sync = queue;
         [self instantiateClient:clientName];
         
         internalClock = [[Clock alloc] initWithStartBlock:^(){ [self sendStart]; }
@@ -251,46 +250,34 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 - (void)notify_midiClock
 {
-    dispatch_async(sync, ^{
-        [_realtimeDelegate midiClock];
-    });
+    [_realtimeDelegate midiClock];
 }
 
 - (void)notify_midiTick
 {
-    dispatch_async(sync, ^{
-        [_realtimeDelegate midiTick];
-    });
+    [_realtimeDelegate midiTick];
 }
 
 - (void)notify_midiStart
 {
-    dispatch_async(sync, ^{
-        [_realtimeDelegate midiStart];
-    });
+    [_realtimeDelegate midiStart];
 }
 
 - (void)notify_midiStop
 {
-    dispatch_async(sync, ^{
-        [_realtimeDelegate midiStop];
-    });
+    [_realtimeDelegate midiStop];
 }
 
 - (void)notify_midiContinue
 {
-    dispatch_async(sync, ^{
-        [_realtimeDelegate midiContinue];
-    });
+    [_realtimeDelegate midiContinue];
 }
 
 - (void)notify_midiStatus:(Byte)status withData1:(Byte)data1 withData2:(Byte)data2
 {
-    dispatch_async(sync, ^{
-        [_voiceDelegate midiStatus:status
-                             data1:data1
-                             data2:data2];
-    });
+    [_voiceDelegate midiStatus:status
+                         data1:data1
+                         data2:data2];
 }
 
 - (void)processMidiPacket:(const MIDIPacket *)packet
