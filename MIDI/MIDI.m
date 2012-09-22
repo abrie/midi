@@ -3,24 +3,24 @@
 static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcConnRefCon);
 
 @implementation MIDI
-@synthesize clientName = _clientName;
+@synthesize clientName;
 
-- (id)initWithName:(NSString *)clientName
+- (id)initWithName:(NSString *)name
 {
     self = [super init];
     
     if (self)
     {
-        [self instantiateClient:clientName];
+        [self instantiateClientNamed:name];
         [self initializeInternalClock];
     }
     
     return self;
 }
 
-- (void)instantiateClient:(NSString *)clientName
+- (void)instantiateClientNamed:(NSString *)name
 {
-    MIDIClientCreate((__bridge CFStringRef)clientName,
+    MIDIClientCreate((__bridge CFStringRef)name,
                      0,
                      0,
                      &client);
@@ -37,7 +37,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     
     self.destinations = [self discoverDestinations];
     self.sources = [self discoverSources];
-    _clientName = [NSString stringWithString:clientName];
+    clientName = [NSString stringWithString:name];
 }
 
 - (void)initializeInternalClock
