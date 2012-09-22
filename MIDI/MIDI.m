@@ -127,7 +127,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 -(void) connectDestinationByIndex:(NSInteger)index
 {
-    out_endpoint = MIDIGetDestination(index);
+    outEndpoint = MIDIGetDestination(index);
 }
 
 -(void) disconnectDestinationByIndex:(NSInteger)index
@@ -198,39 +198,39 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 {
     Byte data1 = position & 0xFF;
     Byte data2 = position >> 8;
-    [self transmitToEndpoint:out_endpoint status:0xF2 data1:data1 data2:data2];
+    [self transmitToEndpoint:outEndpoint status:0xF2 data1:data1 data2:data2];
 }
 
 - (void)sendClock
 {
-    [self transmitToEndpoint:out_endpoint status:0xF8];
+    [self transmitToEndpoint:outEndpoint status:0xF8];
 }
 
 - (void)sendTick
 {
-    [self transmitToEndpoint:out_endpoint status:0xF9];
+    [self transmitToEndpoint:outEndpoint status:0xF9];
 }
 
 - (void)sendStart
 {
-    [self transmitToEndpoint:out_endpoint status:0xFA];
+    [self transmitToEndpoint:outEndpoint status:0xFA];
 }
 
 - (void)sendContinue
 {
-    [self transmitToEndpoint:out_endpoint status:0xFB];
+    [self transmitToEndpoint:outEndpoint status:0xFB];
 }
 
 - (void)sendStop
 {
-    [self transmitToEndpoint:out_endpoint status:0xFC];
+    [self transmitToEndpoint:outEndpoint status:0xFC];
 }
 
 - (void)sendOnToChannel:(unsigned int)channel
                  number:(unsigned int)number
                velocity:(unsigned int)velocity
 {
-	[self transmitToEndpoint:out_endpoint
+	[self transmitToEndpoint:outEndpoint
                       status:0x90 + channel
                       data1:number
                       data2:velocity];
@@ -240,7 +240,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                   number:(unsigned int)number
                 velocity:(unsigned int)velocity
 {
-	[self transmitToEndpoint:out_endpoint
+	[self transmitToEndpoint:outEndpoint
                       status:0x80 + channel
                       data1:number
                       data2:velocity ];

@@ -24,7 +24,7 @@
     MIDIClientRef client;
     MIDIPortRef inputPort;
     MIDIPortRef outputPort;
-	MIDIEndpointRef out_endpoint;
+	MIDIEndpointRef outEndpoint;
     Clock *internalClock;
 }
 
