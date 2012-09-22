@@ -4,6 +4,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 @implementation MIDI
 @synthesize clientName;
+@synthesize isStarted;
 
 - (id)initWithName:(NSString *)name
 {
@@ -258,16 +259,19 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 - (void)notify_midiStart
 {
+    [self setIsStarted:YES];
     [_realtimeDelegate midiStart];
 }
 
 - (void)notify_midiStop
 {
+    [self setIsStarted:NO];
     [_realtimeDelegate midiStop];
 }
 
 - (void)notify_midiContinue
 {
+    [self setIsStarted:YES];
     [_realtimeDelegate midiContinue];
 }
 

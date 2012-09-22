@@ -67,6 +67,7 @@
 - (void)test_Continue
 {
     STAssertFalse( [self midiContinueReceived], @"Initial test condition");
+    STAssertFalse( [self.midi isStarted], nil);
     
     [self.midi sendContinue];
     
@@ -76,11 +77,13 @@
     }
     
     STAssertTrue( [self midiContinueReceived], nil);
+    STAssertTrue( [self.midi isStarted], nil);
 }
 
 - (void)test_Start
 {
     STAssertFalse( [self midiStartReceived], @"Initial test condition");
+    STAssertFalse( [self.midi isStarted], nil);
     
     [self.midi sendStart];
     
@@ -90,11 +93,13 @@
     }
     
     STAssertTrue( [self midiStartReceived], nil);
+    STAssertTrue( [self.midi isStarted], nil);
 }
 
 - (void)test_Stop
 {
     STAssertFalse( [self midiStopReceived], @"Initial test condition");
+    STAssertFalse( [self.midi isStarted], nil);
     
     [self.midi sendStop];
     
@@ -104,6 +109,54 @@
     }
     
     STAssertTrue( [self midiStopReceived], nil);
+    STAssertFalse( [self.midi isStarted], nil);
+}
+
+- (void)test_StartStopContinue
+{
+    STAssertFalse( [self midiStopReceived], @"Initial test condition");
+    STAssertFalse( [self.midi isStarted], nil);
+    STAssertFalse( [self midiStartReceived], @"Initial test condition");
+    
+    [self.midi sendStart];
+    while( ![self midiStartReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    [self setMidiStartReceived:NO]; //reset test state
+    STAssertTrue( [self.midi isStarted], nil);
+    
+    [self.midi sendClock];
+    while( ![self midiClockReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    [self setMidiClockReceived:NO]; //reset test state
+    STAssertTrue( [self.midi isStarted], nil);
+    
+    [self.midi sendStop];
+    while( ![self midiStopReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    [self setMidiStopReceived:NO]; //reset test state
+    STAssertFalse( [self.midi isStarted], nil);
+    
+    [self.midi sendContinue];
+    while( ![self midiContinueReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    [self setMidiContinueReceived:NO]; //reset test state
+    STAssertTrue( [self.midi isStarted], nil);
+    
+    [self.midi sendStop];
+    while( ![self midiStopReceived] )
+    {
+        // the tight loop strikes again.
+    }
+    [self setMidiStopReceived:NO]; //reset test state
+    STAssertFalse( [self.midi isStarted], nil);
 }
 
 - (void)test_Clock

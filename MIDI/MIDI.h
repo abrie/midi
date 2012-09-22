@@ -33,6 +33,7 @@
 @property (strong) NSArray *destinations;
 @property (strong) id<RealtimeProtocol> realtimeDelegate;
 @property (strong) id<StatusProtocol> voiceDelegate;
+@property (atomic) BOOL isStarted;
 
 - (id)initWithName:(NSString *)clientName;
 
