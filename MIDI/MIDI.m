@@ -116,9 +116,8 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 -(void) connectDestinationByName:(NSString *)name
 {
-    [[self discoverDestinations]
-     enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-     {
+    NSArray *destinations = [self discoverDestinations];
+    [destinations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if( (*stop = [name isEqualToString:obj]) )
         {
             [self connectDestinationByIndex:idx];
