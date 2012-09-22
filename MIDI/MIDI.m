@@ -33,7 +33,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                         CFSTR("input"),
                         midiRead,
                         (__bridge void *)(self),
-                        &input_port);
+                        &inputPort);
     
     self.destinations = [self discoverDestinations];
     self.sources = [self discoverSources];
@@ -132,7 +132,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 -(void) disconnectDestinationByIndex:(NSInteger)index
 {
-    MIDIPortDisconnectSource(input_port, MIDIGetSource(index) );
+    MIDIPortDisconnectSource(inputPort, MIDIGetSource(index) );
 }
 
 -(void) connectSourceByName:(NSString *)name
@@ -149,12 +149,12 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 -(void) connectSourceByIndex:(NSInteger)index
 {
-    MIDIPortConnectSource( input_port, MIDIGetSource(index), NULL );
+    MIDIPortConnectSource( inputPort, MIDIGetSource(index), NULL );
 }
 
 -(void) disconnectSource:(NSInteger)index
 {
-    MIDIPortDisconnectSource( input_port, MIDIGetSource(index) );
+    MIDIPortDisconnectSource( inputPort, MIDIGetSource(index) );
 }
 
 - (void)transmitToEndpoint:(MIDIEndpointRef)endpoint

@@ -22,7 +22,7 @@
 @interface MIDI : NSObject {
 @private
     MIDIClientRef client;
-    MIDIPortRef input_port;
+    MIDIPortRef inputPort;
     MIDIPortRef outputPort;
 	MIDIEndpointRef out_endpoint;
     Clock *internalClock;
