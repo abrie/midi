@@ -203,6 +203,13 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                       packet_list);
 }
 
+- (void)sendSongPosition:(unsigned int)position
+{
+    Byte byte1 = position & 0xFF;
+    Byte byte2 = position >> 8;
+    [self transmitToEndpoint:out_endpoint status:0xF2 data_1:byte1 data_2:byte2];
+}
+
 - (void)sendClock
 {
     [self transmitToEndpoint:out_endpoint byte:0xF8];
@@ -273,6 +280,14 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     [_realtimeDelegate midiContinue];
 }
 
+- (void)notify_SongPosition:(Byte)data1 data2:(Byte)data2
+{
+    unsigned int lo = data1;
+    unsigned int hi = data2;
+    unsigned int position = (hi << 8) + lo;
+    [_realtimeDelegate midiSetSongPosition:position];
+}
+
 - (void)notify_midiStatus:(Byte)status withData1:(Byte)data1 withData2:(Byte)data2
 {
     [_voiceDelegate midiStatus:status
@@ -284,6 +299,9 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 {
     switch (packet->data[0])
     {
+        case 0xF2:
+            [self notify_SongPosition:packet->data[1]
+                                data2:packet->data[2]];
         case 0xF8:
             [self notify_midiClock];
             break;

@@ -8,6 +8,7 @@
 @synthesize midiContinueReceived;
 @synthesize midiStartReceived;
 @synthesize midiStopReceived;
+@synthesize midiSongPosition;
 
 - (void)setUp
 {
@@ -23,6 +24,7 @@
     [self setMidiContinueReceived:NO];
     [self setMidiStartReceived:NO];
     [self setMidiStopReceived:NO];
+    [self setMidiSongPosition:0];
 }
 
 - (void)tearDown
@@ -54,6 +56,12 @@
 - (void)midiContinue
 {
     [self setMidiContinueReceived:YES];
+}
+
+- (void)midiSetSongPosition:(NSUInteger)position
+{
+    [self setMidiSongPositionRecieved:YES];
+    [self setMidiSongPosition:position];
 }
 
 - (void)test_Continue
@@ -124,6 +132,19 @@
     }
     
     STAssertTrue( [self midiTickReceived], nil);
+}
+
+- (void)test_SetSongPosition
+{
+    STAssertTrue( [self midiSongPosition] == 0, @"Initial test condition");
+    [self.midi sendSongPosition:321];
+    
+    while( ![self midiSongPositionRecieved] )
+    {
+        // the tight loop strikes again.
+    }
+    
+    STAssertTrue( [self midiSongPosition] == 321, nil);
 }
 
 - (void)waitForMessage

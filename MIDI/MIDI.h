@@ -9,6 +9,7 @@
 - (void)midiContinue;
 - (void)midiClock;
 - (void)midiTick;
+- (void)midiSetSongPosition:(NSUInteger)position;
 
 @end
 
@@ -55,6 +56,7 @@
 - (void)sendStart;
 - (void)sendStop;
 - (void)sendContinue;
+- (void)sendSongPosition:(unsigned int)position;
 
 - (void)runInternalClock:(NSTimeInterval)timeInterval;
 - (void)adjustInternalClock:(NSTimeInterval)timeInterval;

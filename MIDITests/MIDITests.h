@@ -9,6 +9,8 @@
 @property (atomic) BOOL midiStopReceived;
 @property (atomic) BOOL midiContinueReceived;
 @property (atomic) BOOL midiTickReceived;
+@property (atomic) BOOL midiSongPositionRecieved;
+@property (atomic) NSUInteger midiSongPosition;
 @property (atomic, strong) NSDictionary *lastMidiMessage;
 @property (atomic, strong) dispatch_queue_t sync;
 
