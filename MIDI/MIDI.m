@@ -27,7 +27,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     
     MIDIOutputPortCreate(client,
                          CFSTR("output"),
-                         &output_port);
+                         &outputPort);
     
     MIDIInputPortCreate(client,
                         CFSTR("input"),
@@ -175,7 +175,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
                                length,
                                message);
 	
-    result = MIDISend(output_port, endpoint, packet_list);
+    result = MIDISend(outputPort, endpoint, packet_list);
 }
 
 - (void)transmitToEndpoint:(MIDIEndpointRef)endpoint
