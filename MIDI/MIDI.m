@@ -138,9 +138,9 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 -(void) connectSourceByName:(NSString *)name
 {
-    [[self discoverSources]
-     enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
-     {
+    NSArray *sources = [self discoverSources];
+    
+    [sources enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if( (*stop = [name isEqualToString:obj]) )
         {
             [self connectSourceByIndex:idx];
