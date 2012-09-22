@@ -12,10 +12,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     if (self)
     {
         [self instantiateClient:clientName];
-        
-        internalClock = [[Clock alloc] initWithStartBlock:^(){ [self sendStart]; }
-                                                    clock:^(){ [self sendClock]; }
-                                                     stop:^(){ [self sendStop]; }];
+        [self initializeInternalClock];
     }
     
     return self;
@@ -41,6 +38,13 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     self.destinations = [self discoverDestinations];
     self.sources = [self discoverSources];
     _clientName = [NSString stringWithString:clientName];
+}
+
+- (void)initializeInternalClock
+{
+    internalClock = [[Clock alloc] initWithStartBlock:^(){ [self sendStart]; }
+                                                clock:^(){ [self sendClock]; }
+                                                 stop:^(){ [self sendStop]; }];
 }
 
 - (void)stopInternalClock
