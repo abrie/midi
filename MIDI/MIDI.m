@@ -12,6 +12,7 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     
     if (self)
     {
+        [self setIsStarted:NO];
         [self instantiateClientNamed:name];
         [self initializeInternalClock];
     }
@@ -249,7 +250,9 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 - (void)notify_midiClock
 {
-    [_realtimeDelegate midiClock];
+    if ([self isStarted]) {
+        [_realtimeDelegate midiClock];
+    }
 }
 
 - (void)notify_midiTick
