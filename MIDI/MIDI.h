@@ -52,6 +52,10 @@
                   number:(unsigned int)number
                 velocity:(unsigned int)velocity;
 
+- (void)sendCCToChannel:(unsigned int)channel
+             controller:(unsigned int)controller
+                  value:(unsigned int)value;
+
 - (void)sendClock;
 - (void)sendTick;
 - (void)sendStart;

@@ -228,6 +228,17 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
     [self transmitToEndpoint:outEndpoint status:0xFC];
 }
 
+
+- (void)sendCCToChannel:(unsigned int)channel
+                 controller:(unsigned int)controller
+               value:(unsigned int)value
+{
+	[self transmitToEndpoint:outEndpoint
+                      status:0xB0 + channel
+                       data1:controller
+                       data2:value];
+}
+
 - (void)sendOnToChannel:(unsigned int)channel
                  number:(unsigned int)number
                velocity:(unsigned int)velocity
