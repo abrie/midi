@@ -230,12 +230,12 @@ static void midiRead(const MIDIPacketList *pktlist, void *readProcRefCon, void *
 
 
 - (void)sendCCToChannel:(unsigned int)channel
-                 controller:(unsigned int)controller
+                 number:(unsigned int)number
                value:(unsigned int)value
 {
 	[self transmitToEndpoint:outEndpoint
                       status:0xB0 + channel
-                       data1:controller
+                       data1:number
                        data2:value];
 }
 

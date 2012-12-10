@@ -53,7 +53,7 @@
                 velocity:(unsigned int)velocity;
 
 - (void)sendCCToChannel:(unsigned int)channel
-             controller:(unsigned int)controller
+                 number:(unsigned int)number
                   value:(unsigned int)value;
 
 - (void)sendClock;
